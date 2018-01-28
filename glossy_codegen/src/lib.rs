@@ -144,11 +144,12 @@ impl Config {
     /// compile-time shader validator to a certain extent. Note that the error messages generated
     /// by the compiler will have inaccurate file line information, as it does not account for the
     /// #included files or stripped comments (the optimizer does not support reading comments).
-    pub fn build(self) {
+    pub fn build<P>(self, path: P)
+        where P: AsRef<Path>
+    {
         use std::io::Write;
 
-        let out_dir = env::var("OUT_DIR").unwrap();
-        let out_path = Path::new(&out_dir);
+        let out_path = path.as_ref();
 
         // A map of include names to file IDs
         let mut include_map = HashMap::new();
